@@ -5,7 +5,7 @@ CC = /usr/bin/gcc
 # linker
 LD = /usr/bin/ld
 # grub iso creator
-GRUB = /usr/bin/grub-mkrescue
+GRUB = /usr/bin/grub2-mkrescue
 # sources
 SRC = src
 ASM_SRC = $(SRC)/asm
@@ -45,7 +45,7 @@ OBJECTS=$(ASM_OBJ)/entry.o $(ASM_OBJ)/load_gdt.o\
 all: $(OBJECTS)
 	@printf "[ linking... ]\n"
 	$(LD) $(LD_FLAGS) -o $(TARGET) $(OBJECTS)
-	grub-file --is-x86-multiboot $(TARGET)
+	grub2-file --is-x86-multiboot $(TARGET)
 	@printf "\n"
 	@printf "[ building ISO... ]\n"
 	$(MKDIR) $(ISO_DIR)/boot/grub
