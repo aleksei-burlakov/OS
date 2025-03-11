@@ -1,3 +1,12 @@
+# Compile and run VESA VBE
+'''
+zypper in make nasm gcc grub2 mtools xorriso # to compile
+zypper in qemu # to start
+cd NEW\ KERNEL
+make
+make run
+'''
+
 # OS
 Simple Operating System programs starting from Bootloader in assembly to Kernel in C, and other programs like OS Calculator, Low Level Graphics etc.
 
@@ -54,4 +63,3 @@ Assembly code is replaced with NASM assembly rathen than GNU AS.
 16]&nbsp;&nbsp;&nbsp;VGA<br/>
 17]&nbsp;&nbsp;&nbsp;VESA VBE<br/>
 18]&nbsp;&nbsp;&nbsp;Bitmap Text<br/>
-
