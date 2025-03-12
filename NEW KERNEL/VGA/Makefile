@@ -138,6 +138,8 @@ $(OBJ)/bitmap.o : $(SRC)/bitmap.c
 	$(CC) $(CC_FLAGS) -c $(SRC)/bitmap.c -o $(OBJ)/bitmap.o
 	@printf "\n"
 
+run:
+	qemu-system-x86_64 -cdrom out/VGA.iso
 
 clean:
 	rm -f $(OBJ)/*.o
