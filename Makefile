@@ -37,8 +37,10 @@ ISO_DIR=$(OUT)/isodir
 
 OBJECTS=$(ASM_OBJ)/entry.o $(ASM_OBJ)/load_gdt.o\
 		$(ASM_OBJ)/load_idt.o $(ASM_OBJ)/exception.o $(ASM_OBJ)/irq.o\
+		$(ASM_OBJ)/ioxvg.o \
 		$(OBJ)/io_ports.o $(OBJ)/string.o $(OBJ)/gdt.o $(OBJ)/idt.o $(OBJ)/isr.o $(OBJ)/8259_pic.o\
-		$(OBJ)/keyboard.o $(OBJ)/kernel.o $(OBJ)/console.o $(OBJ)/vga.o $(OBJ)/mouse.o $(OBJ)/bitmap.o
+		$(OBJ)/keyboard.o $(OBJ)/kernel.o $(OBJ)/console.o $(OBJ)/vga.o $(OBJ)/mouse.o $(OBJ)/bitmap.o \
+		$(OBJ)/vgaxvg.o $(OBJ)/sgl.o
 
 
 all: $(OBJECTS)
@@ -52,6 +54,11 @@ all: $(OBJECTS)
 	$(CP) $(CONFIG)/grub.cfg $(ISO_DIR)/boot/grub/
 	$(GRUB) -o $(TARGET_ISO) $(ISO_DIR)
 	rm -f $(TARGET)
+
+$(ASM_OBJ)/ioxvg.o : $(ASM_SRC)/ioxvg.s
+	@printf "[ $(ASM_SRC)/ioxvg.s ]\n"
+	$(ASM) $(ASM_FLAGS) $(ASM_SRC)/ioxvg.s -o $(ASM_OBJ)/ioxvg.o
+	@printf "\n"
 
 $(ASM_OBJ)/entry.o : $(ASM_SRC)/entry.asm
 	@printf "[ $(ASM_SRC)/entry.asm ]\n"
@@ -76,6 +83,16 @@ $(ASM_OBJ)/exception.o : $(ASM_SRC)/exception.asm
 $(ASM_OBJ)/irq.o : $(ASM_SRC)/irq.asm
 	@printf "[ $(ASM_SRC)/irq.asm ]\n"
 	$(ASM) $(ASM_FLAGS) $(ASM_SRC)/irq.asm -o $(ASM_OBJ)/irq.o
+	@printf "\n"
+
+$(OBJ)/vgaxvg.o : $(SRC)/vgaxvg.c
+	@printf "[ $(SRC)/vgaxvg.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/vgaxvg.c -o $(OBJ)/vgaxvg.o
+	@printf "\n"
+
+$(OBJ)/sgl.o : $(SRC)/sgl.c
+	@printf "[ $(SRC)/sgl.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/sgl.c -o $(OBJ)/sgl.o
 	@printf "\n"
 
 $(OBJ)/io_ports.o : $(SRC)/io_ports.c
