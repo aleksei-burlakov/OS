@@ -40,7 +40,8 @@ OBJECTS=$(ASM_OBJ)/entry.o $(ASM_OBJ)/load_gdt.o\
 		$(OBJ)/io_ports.o $(OBJ)/string.o $(OBJ)/gdt.o $(OBJ)/idt.o $(OBJ)/isr.o $(OBJ)/8259_pic.o\
 		$(OBJ)/keyboard.o $(OBJ)/kernel.o $(OBJ)/kheap.o $(OBJ)/bios32.o\
 		$(OBJ)/console.o $(OBJ)/vga.o $(OBJ)/pmm.o $(OBJ)/vesa.o\
-		$(OBJ)/mouse.o $(OBJ)/bitmap.o 
+		$(OBJ)/mouse.o $(OBJ)/bitmap.o\
+		$(OBJ)/debug.o $(OBJ)/stdio.o $(OBJ)/vfs.o $(OBJ)/vga_text.o
 
 
 all: $(OBJECTS)
@@ -164,9 +165,29 @@ $(OBJ)/vesa.o : $(SRC)/vesa.c
 	$(CC) $(CC_FLAGS) -c $(SRC)/vesa.c -o $(OBJ)/vesa.o
 	@printf "\n"
 
+$(OBJ)/debug.o : $(SRC)/debug.c
+	@printf "[ $(SRC)/debug.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/debug.c -o $(OBJ)/debug.o
+	@printf "\n"
+
+$(OBJ)/stdio.o : $(SRC)/stdio.c
+	@printf "[ $(SRC)/stdio.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/stdio.c -o $(OBJ)/stdio.o
+	@printf "\n"
+
+$(OBJ)/vfs.o : $(SRC)/vfs.c
+	@printf "[ $(SRC)/vfs.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/vfs.c -o $(OBJ)/vfs.o
+	@printf "\n"
+
+$(OBJ)/vga_text.o : $(SRC)/vga_text.c
+	@printf "[ $(SRC)/vga_text.c ]\n"
+	$(CC) $(CC_FLAGS) -c $(SRC)/vga_text.c -o $(OBJ)/vga_text.o
+	@printf "\n"
+
 
 run:
-	qemu-system-x86_64 -cdrom out/vga_vesa.iso
+	qemu-system-x86_64 -debugcon stdio -cdrom out/vga_vesa.iso
 
 clean:
 	rm -f $(OBJ)/*.o

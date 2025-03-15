@@ -12,6 +12,7 @@
 #include "multiboot.h"
 #include "pmm.h"
 #include "vesa.h"
+#include "debug.h"
 
 KERNEL_MEMORY_MAP g_kmap;
 
@@ -79,7 +80,7 @@ void display_kernel_memory_map(KERNEL_MEMORY_MAP *kmap) {
 
 void kmain(unsigned long magic, unsigned long addr) {
     MULTIBOOT_INFO *mboot_info;
-
+    log_info("KERNEL", "KERNEL IS STARTING");
     gdt_init();
     idt_init();
     
@@ -87,13 +88,15 @@ void kmain(unsigned long magic, unsigned long addr) {
 
     keyboard_init();
     mouse_init();
-    const int VGA_MODE = FALSE; // TRUE = VGA, FALSE = VESA
+    const int VGA_MODE = TRUE; // TRUE = VGA, FALSE = VESA
     if(VGA_MODE) {
+        log_info("KERNEL", "The VGA mode is chosen. To change to VESA, set 'const int VGA_MODE = FALSE'");
         vga_graphics_init();
         vga_graphics_clear_color(COLOR_WHITE);
         vga_graphics_draw_rect(10, 10, 10, 10, COLOR_GREEN);
     } else
     if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
+        log_info("KERNEL", "The VESA mode is chosen. To change to VGA, set 'const int VGA_MODE = TRUE'");
         mboot_info = (MULTIBOOT_INFO *)addr;
         memset(&g_kmap, 0, sizeof(KERNEL_MEMORY_MAP));
         if (get_kernel_memory_map(&g_kmap, mboot_info) < 0) {
